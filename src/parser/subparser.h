@@ -36,10 +36,10 @@ void explodeStdVMess(std::string vmess, Proxy &node);
 void explodeShadowrocket(std::string kit, Proxy &node);
 void explodeKitsunebi(std::string kit, Proxy &node);
 /// Parse a link
-void explode(const std::string &link, Proxy &node);
+void explode(const std::string &link, Proxy &node, std::string newHost);
 void explodeSSD(std::string link, std::vector<Proxy> &nodes);
-void explodeSub(std::string sub, std::vector<Proxy> &nodes);
-int explodeConf(const std::string &filepath, std::vector<Proxy> &nodes);
-int explodeConfContent(const std::string &content, std::vector<Proxy> &nodes);
+void explodeSub(std::string sub, std::vector<Proxy> &nodes, std::string newHost);
+int explodeConf(const std::string &filepath, std::vector<Proxy> &nodes, std::string newHost);
+int explodeConfContent(const std::string &content, std::vector<Proxy> &nodes, std::string newHost);
 
 #endif // SUBPARSER_H_INCLUDED

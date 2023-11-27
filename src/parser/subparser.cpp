@@ -2157,7 +2157,7 @@ void explodeNetchConf(std::string netch, std::vector<Proxy> &nodes)
     }
 }
 
-int explodeConfContent(const std::string &content, std::vector<Proxy> &nodes)
+int explodeConfContent(const std::string &content, std::vector<Proxy> &nodes, std::string newHost)
 {
     ConfType filetype = ConfType::Unknow;
 
@@ -2198,18 +2198,21 @@ int explodeConfContent(const std::string &content, std::vector<Proxy> &nodes)
         break;
     default:
         //try to parse as a local subscription
-        explodeSub(content, nodes);
+        explodeSub(content, nodes, newHost);
     }
 
     return !nodes.empty();
 }
 
-void explode(const std::string &link, Proxy &node)
+void explode(const std::string &link, Proxy &node, std::string newHost)
 {
     if(startsWith(link, "ssr://"))
         explodeSSR(link, node);
     else if(startsWith(link, "vmess://") || startsWith(link, "vmess1://"))
         explodeVmess(link, node);
+        if(!newHost.empty()) {
+            node.Host = newHost;
+        }
     else if(startsWith(link, "ss://"))
         explodeSS(link, node);
     else if(startsWith(link, "socks://") || startsWith(link, "https://t.me/socks") || startsWith(link, "tg://socks"))
@@ -2224,7 +2227,7 @@ void explode(const std::string &link, Proxy &node)
         explodeHTTPSub(link, node);
 }
 
-void explodeSub(std::string sub, std::vector<Proxy> &nodes)
+void explodeSub(std::string sub, std::vector<Proxy> &nodes, std::string newHost)
 {
     std::stringstream strstream;
     std::string strLink;
@@ -2280,7 +2283,7 @@ void explodeSub(std::string sub, std::vector<Proxy> &nodes)
             Proxy node;
             if(strLink.rfind('\r') != std::string::npos)
                 strLink.erase(strLink.size() - 1);
-            explode(strLink, node);
+            explode(strLink, node, newHost);
             if(strLink.empty() || node.Type == ProxyType::Unknown)
             {
                 continue;

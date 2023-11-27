@@ -331,6 +331,7 @@ std::string subconverter(RESPONSE_CALLBACK_ARGS)
         readConf();
 
     /// string values
+    std::string newHost = getUrlArg(argument, "newHost");
     std::string argUrl = urlDecode(getUrlArg(argument, "url"));
     std::string argGroupName = urlDecode(getUrlArg(argument, "group")), argUploadPath = getUrlArg(argument, "upload_path");
     std::string argIncludeRemark = urlDecode(getUrlArg(argument, "include")), argExcludeRemark = urlDecode(getUrlArg(argument, "exclude"));
@@ -576,7 +577,7 @@ std::string subconverter(RESPONSE_CALLBACK_ARGS)
         {
             x = regTrim(x);
             writeLog(0, "Fetching node data from url '" + x + "'.", LOG_LEVEL_INFO);
-            if(addNodes(x, insert_nodes, groupID, parse_set) == -1)
+            if(addNodes(x, insert_nodes, groupID, parse_set, newHost) == -1)
             {
                 if(global.skipFailedLinks)
                     writeLog(0, "The following link doesn't contain any valid node info: " + x, LOG_LEVEL_WARNING);
@@ -597,7 +598,7 @@ std::string subconverter(RESPONSE_CALLBACK_ARGS)
         x = regTrim(x);
         //std::cerr<<"Fetching node data from url '"<<x<<"'."<<std::endl;
         writeLog(0, "Fetching node data from url '" + x + "'.", LOG_LEVEL_INFO);
-        if(addNodes(x, nodes, groupID, parse_set) == -1)
+        if(addNodes(x, nodes, groupID, parse_set, newHost) == -1)
         {
             if(global.skipFailedLinks)
                 writeLog(0, "The following link doesn't contain any valid node info: " + x, LOG_LEVEL_WARNING);
@@ -936,6 +937,7 @@ std::string simpleToClashR(RESPONSE_CALLBACK_ARGS)
 std::string surgeConfToClash(RESPONSE_CALLBACK_ARGS)
 {
     auto argument = joinArguments(request.argument);
+    std::string newHost = getUrlArg(argument, "newHost");
     int *status_code = &response.status_code;
 
     INIReader ini;
@@ -1044,7 +1046,7 @@ std::string surgeConfToClash(RESPONSE_CALLBACK_ARGS)
     {
         //std::cerr<<"Fetching node data from url '"<<x<<"'."<<std::endl;
         writeLog(0, "Fetching node data from url '" + x + "'.", LOG_LEVEL_INFO);
-        if(addNodes(x, nodes, 0, parse_set) == -1)
+        if(addNodes(x, nodes, 0, parse_set, newHost) == -1)
         {
             if(global.skipFailedLinks)
                 writeLog(0, "The following link doesn't contain any valid node info: " + x, LOG_LEVEL_WARNING);

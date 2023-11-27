@@ -22,9 +22,9 @@ extern Settings global;
 
 bool applyMatcher(const std::string &rule, std::string &real_rule, const Proxy &node);
 
-int explodeConf(const std::string &filepath, std::vector<Proxy> &nodes)
+int explodeConf(const std::string &filepath, std::vector<Proxy> &nodes, std::string newHost)
 {
-    return explodeConfContent(fileGet(filepath), nodes);
+    return explodeConfContent(fileGet(filepath), nodes, newHost);
 }
 
 void copyNodes(std::vector<Proxy> &source, std::vector<Proxy> &dest)
@@ -32,7 +32,7 @@ void copyNodes(std::vector<Proxy> &source, std::vector<Proxy> &dest)
     std::move(source.begin(), source.end(), std::back_inserter(dest));
 }
 
-int addNodes(std::string link, std::vector<Proxy> &allNodes, int groupID, parse_settings &parse_set)
+int addNodes(std::string link, std::vector<Proxy> &allNodes, int groupID, parse_settings &parse_set, std::string newHost)
 {
     std::string &proxy = *parse_set.proxy, &subInfo = *parse_set.sub_info;
     string_array &exclude_remarks = *parse_set.exclude_remarks;
@@ -160,7 +160,7 @@ int addNodes(std::string link, std::vector<Proxy> &allNodes, int groupID, parse_
         if(!strSub.empty())
         {
             writeLog(LOG_TYPE_INFO, "Parsing subscription data...");
-            if(explodeConfContent(strSub, nodes) == 0)
+            if(explodeConfContent(strSub, nodes, newHost) == 0)
             {
                 writeLog(LOG_TYPE_ERROR, "Invalid subscription: '" + link + "'!");
                 return -1;
@@ -193,7 +193,7 @@ int addNodes(std::string link, std::vector<Proxy> &allNodes, int groupID, parse_
         if(!authorized)
             return -1;
         writeLog(LOG_TYPE_INFO, "Parsing configuration file data...");
-        if(explodeConf(link, nodes) == 0)
+        if(explodeConf(link, nodes, newHost) == 0)
         {
             writeLog(LOG_TYPE_ERROR, "Invalid configuration file!");
             return -1;
@@ -216,7 +216,7 @@ int addNodes(std::string link, std::vector<Proxy> &allNodes, int groupID, parse_
         copyNodes(nodes, allNodes);
         break;
     default:
-        explode(link, node);
+        explode(link, node, newHost);
         if(node.Type == ProxyType::Unknown)
         {
             writeLog(LOG_TYPE_ERROR, "No valid link found.");

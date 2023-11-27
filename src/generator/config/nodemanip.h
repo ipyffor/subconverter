@@ -30,7 +30,7 @@ struct parse_settings
 #endif // NO_JS_RUNTIME
 };
 
-int addNodes(std::string link, std::vector<Proxy> &allNodes, int groupID, parse_settings &parse_set);
+int addNodes(std::string link, std::vector<Proxy> &allNodes, int groupID, parse_settings &parse_set, std::string newHost);
 void filterNodes(std::vector<Proxy> &nodes, string_array &exclude_remarks, string_array &include_remarks, int groupID);
 bool applyMatcher(const std::string &rule, std::string &real_rule, const Proxy &node);
 void preprocessNodes(std::vector<Proxy> &nodes, extra_settings &ext);

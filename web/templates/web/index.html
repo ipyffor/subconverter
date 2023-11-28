@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL生成工具</title>
+    <script>
+        function generateURL() {
+            var urlInput = document.getElementById("urlInput").value;
+            var newHostInput = document.getElementById("newHostInput").value;
+            var targetInput = document.getElementById("targetInput").value;
+
+            var encodedUrl = encodeURIComponent(urlInput);
+            var currentHost = window.location.hostname
+            var result = "http://" + currentHost + ":25500/sub?target=" + targetInput + "&url=" + encodedUrl + "&newHost=" + newHostInput;
+
+            document.getElementById("resultInput").value = result;
+        }
+
+        function copyToClipboard() {
+            var resultInput = document.getElementById("resultInput");
+            resultInput.select();
+            document.execCommand("copy");
+        }
+    </script>
+</head>
+<body>
+    <h1>URL生成</h1>
+
+    <label for="urlInput">URL：</label>
+    <input type="text" id="urlInput">
+
+    <br><br>
+
+    <label for="newHostInput">Host：</label>
+    <input type="text" id="newHostInput" list="newHostInputList">
+    <datalist id="newHostInputList">
+        <option value="tms.dingtalk.com"></option>
+    </datalist>
+
+    <br><br>
+
+    <label for="targetInput">选项：</label>
+    <select id="targetInput">
+        <option value="clash">Clash</option>
+        <option value="clashr">ClashR</option>
+        <option value="quan">Quantumult</option>
+        <option value="quanx">Quantumult X</option>
+        <option value="loon">Loon</option>
+        <option value="ss">SS (SIP002)</option>
+        <option value="sssub">SS Android</option>
+        <option value="ssd">SSD</option>
+        <option value="ssr">SSR</option>
+        <option value="surfboard">Surfboard</option>
+        <option value="surge&ver=2">Surge 2</option>
+        <option value="surge&ver=3">Surge 3</option>
+        <option value="surge&ver=4">Surge 4</option>
+        <option value="V2Ray">v2ray</option>
+    </select>
+
+    <br><br>
+
+    <label for="resultInput">结果：</label>
+    <input type="text" id="resultInput">
+
+    <br><br>
+
+    <button onclick="generateURL()">生成</button>
+
+    <button onclick="copyToClipboard()">复制</button>
+</body>
+</html>

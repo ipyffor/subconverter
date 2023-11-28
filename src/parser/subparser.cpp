@@ -44,7 +44,8 @@ void vmessConstruct(Proxy &node, const std::string &group, const std::string &re
     node.UserId = id.empty() ? "00000000-0000-0000-0000-000000000000" : id;
     node.AlterId = to_int(aid);
     node.EncryptMethod = cipher;
-    node.TransferProtocol = net.empty() ? "tcp" : net;
+    // node.TransferProtocol = net.empty() ? "tcp" : net;
+    node.TransferProtocol = net.empty() ? "tcp" : type=="http" ? "http": net;
     node.Edge = edge;
     node.ServerName = sni;
 
@@ -2208,11 +2209,12 @@ void explode(const std::string &link, Proxy &node, std::string newHost)
 {
     if(startsWith(link, "ssr://"))
         explodeSSR(link, node);
-    else if(startsWith(link, "vmess://") || startsWith(link, "vmess1://"))
+    else if(startsWith(link, "vmess://") || startsWith(link, "vmess1://")) {
         explodeVmess(link, node);
         if(!newHost.empty()) {
             node.Host = newHost;
         }
+    }
     else if(startsWith(link, "ss://"))
         explodeSS(link, node);
     else if(startsWith(link, "socks://") || startsWith(link, "https://t.me/socks") || startsWith(link, "tg://socks"))
@@ -2221,8 +2223,9 @@ void explode(const std::string &link, Proxy &node, std::string newHost)
         explodeHTTP(link, node);
     else if(startsWith(link, "Netch://"))
         explodeNetch(link, node);
-    else if(startsWith(link, "trojan://"))
+    else if(startsWith(link, "trojan://")) {
         explodeTrojan(link, node);
+    }
     else if(isLink(link))
         explodeHTTPSub(link, node);
 }

@@ -1,0 +1,7 @@
+** 前端
+
+地址：[[http://127.0.0.1:8000/index/]]
+** 运行
+#+begin_src 
+./manage.py runserver 
+#+end_src

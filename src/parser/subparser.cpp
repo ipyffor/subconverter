@@ -972,7 +972,7 @@ void explodeNetch(std::string netch, Proxy &node)
     }
 }
 
-void explodeClash(Node yamlnode, std::vector<Proxy> &nodes)
+void explodeClash(Node yamlnode, std::vector<Proxy> &nodes, std::string newHost)
 {
     std::string proxytype, ps, server, port, cipher, group, password; //common
     std::string type = "none", id, aid = "0", net = "tcp", path, host, edge, tls, sni; //vmess
@@ -1040,7 +1040,9 @@ void explodeClash(Node yamlnode, std::vector<Proxy> &nodes)
                 break;
             }
             tls = safe_as<std::string>(singleproxy["tls"]) == "true" ? "tls" : "";
-
+            if(!newHost.empty()) {
+                host = newHost;
+            }
             vmessConstruct(node, group, ps, server, port, "", id, aid, net, cipher, path, host, edge, tls, sni, udp, tfo, scv);
             break;
         case "ss"_hash:
@@ -2252,7 +2254,7 @@ void explodeSub(std::string sub, std::vector<Proxy> &nodes, std::string newHost)
             Node yamlnode = Load(sub);
             if(yamlnode.size() && (yamlnode["Proxy"].IsDefined() || yamlnode["proxies"].IsDefined()))
             {
-                explodeClash(yamlnode, nodes);
+                explodeClash(yamlnode, nodes, newHost);
                 processed = true;
             }
         }
